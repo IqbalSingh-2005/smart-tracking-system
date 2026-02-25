@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ConductorScreen extends StatelessWidget {
-  const ConductorScreen({super.key});
+class AlertsScreen extends StatelessWidget {
+  const AlertsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Conductor Dashboard"),
+        title: const Text("Service Alerts"),
       ),
       body: const Center(
         child: Text(
-          "Conductor Dashboard",
-          style: TextStyle(fontSize: 22),
+          "No alerts available",
+          style: TextStyle(fontSize: 18),
         ),
       ),
     );

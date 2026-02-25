@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ConductorScreen extends StatelessWidget {
-  const ConductorScreen({super.key});
+class HistoryScreen extends StatelessWidget {
+  const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Conductor Dashboard"),
+        title: const Text("Travel History"),
       ),
       body: const Center(
         child: Text(
-          "Conductor Dashboard",
-          style: TextStyle(fontSize: 22),
+          "Travel History Screen",
+          style: TextStyle(fontSize: 18),
         ),
       ),
     );

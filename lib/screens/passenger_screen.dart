@@ -1,22 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class PassengerScreen extends StatefulWidget {
+class PassengerScreen extends StatelessWidget {
   const PassengerScreen({super.key});
 
-  @override
-  State<PassengerScreen> createState() =>
-      _PassengerScreenState();
-}
+  Widget buildOption(
+      BuildContext context,
+      String title,
+      IconData icon,
+      String route,
+      ) {
+    return GestureDetector(
 
-class _PassengerScreenState
-    extends State<PassengerScreen> {
+      onTap: () {
+        Navigator.pushNamed(context, route);
+      },
 
-  double lat=31.3260;
-  double lng=75.5762;
+      child: Container(
 
-  GoogleMapController? mapController;
+        padding: const EdgeInsets.all(12),
+
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              blurRadius: 6,
+              offset: const Offset(0,3),
+            )
+          ],
+        ),
+
+        child: Column(
+
+          mainAxisAlignment: MainAxisAlignment.center,
+
+          children: [
+
+            Icon(
+              icon,
+              size: 28,
+              color: Colors.indigo,
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,64 +67,108 @@ class _PassengerScreenState
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("Live Bus Tracking"),
+        title: const Text("Passenger Dashboard"),
+        elevation: 0,
       ),
 
-      body: StreamBuilder(
+      body: Padding(
 
-        stream: FirebaseFirestore.instance
-            .collection("buses")
-            .doc("bus_101")
-            .snapshots(),
+        padding: const EdgeInsets.all(16),
 
-        builder:(context,snapshot){
+        child: Column(
 
-          if(!snapshot.hasData)
-          {
-            return const Center(
-                child:
-                CircularProgressIndicator());
-          }
+          crossAxisAlignment: CrossAxisAlignment.start,
 
-          var data=snapshot.data;
+          children: [
 
-          lat=data!['latitude'];
-          lng=data['longitude'];
+            /// Header
 
-          return GoogleMap(
-
-            initialCameraPosition:
-
-            CameraPosition(
-              target:
-              LatLng(lat,lng),
-              zoom:15,
+            const Text(
+              "Smart Transport",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
-            markers:{
+            const SizedBox(height: 5),
 
-              Marker(
+            const Text(
+              "Passenger Panel",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
 
-                markerId:
-                const MarkerId("bus"),
+            const SizedBox(height: 20),
 
-                position:
-                LatLng(lat,lng),
+            /// Grid Options
 
-              )
+            Expanded(
 
-            },
+              child: GridView.count(
 
-            onMapCreated:(controller){
+                crossAxisCount: 3,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
 
-              mapController=controller;
+                children: [
 
-            },
+                  buildOption(
+                      context,
+                      "Track Bus",
+                      Icons.location_on,
+                      '/trackbus'),
 
-          );
+                  buildOption(
+                      context,
+                      "Routes",
+                      Icons.alt_route,
+                      '/routes'),
 
-        },
+                  buildOption(
+                      context,
+                      "Tickets",
+                      Icons.confirmation_number,
+                      '/tickets'),
 
+                  buildOption(
+                      context,
+                      "My Tickets",
+                      Icons.receipt_long,
+                      '/mytickets'),
+
+                  buildOption(
+                      context,
+                      "Schedule",
+                      Icons.schedule,
+                      '/schedule'),
+
+                  buildOption(
+                      context,
+                      "History",
+                      Icons.history,
+                      '/history'),
+
+                  buildOption(
+                      context,
+                      "Alerts",
+                      Icons.notifications,
+                      '/alerts'),
+
+                  buildOption(
+                      context,
+                      "Profile",
+                      Icons.person,
+                      '/profile'),
+
+                ],
+              ),
+            ),
+
+          ],
+        ),
       ),
 
     );
