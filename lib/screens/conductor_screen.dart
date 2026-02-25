@@ -5,49 +5,72 @@ class ConductorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Conductor Panel")),
+
+      appBar: AppBar(
+        title: const Text("Conductor Panel"),
+      ),
+
       body: Padding(
+
         padding: const EdgeInsets.all(20),
+
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
-            const Text(
-              "Welcome Conductor",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
+
+            const SizedBox(height:20),
 
             Card(
-              elevation: 4,
+
               child: ListTile(
-                leading: const Icon(Icons.qr_code),
-                title: const Text("Scan Passenger Ticket"),
-                onTap: () {},
+
+                leading: const Icon(Icons.qr_code,size:40),
+
+                title: const Text("Scan Ticket"),
+
+                subtitle: const Text("Scan passenger QR"),
+
+                onTap: (){},
+
               ),
             ),
 
-            const SizedBox(height: 15),
+            const SizedBox(height:20),
 
             Card(
-              elevation: 4,
+
               child: ListTile(
-                leading: const Icon(Icons.people),
-                title: const Text("View Passenger Count"),
-                onTap: () {},
+
+                leading: const Icon(Icons.money,size:40),
+
+                title: const Text("Collect Fare"),
+
+                subtitle: const Text("Manual ticket"),
+
+                onTap: (){},
+
               ),
             ),
 
-            const SizedBox(height: 15),
+            const SizedBox(height:20),
 
             Card(
-              elevation: 4,
+
               child: ListTile(
-                leading: const Icon(Icons.verified_user),
-                title: const Text("Verify Identity"),
-                onTap: () {},
+
+                leading: const Icon(Icons.people,size:40),
+
+                title: const Text("Passengers"),
+
+                subtitle: const Text("View passengers"),
+
+                onTap: (){},
+
               ),
             ),
+
           ],
         ),
       ),
