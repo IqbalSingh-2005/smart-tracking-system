@@ -1,7 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class DriverScreen extends StatefulWidget {
   const DriverScreen({super.key});
@@ -12,68 +11,9 @@ class DriverScreen extends StatefulWidget {
 
 class _DriverScreenState extends State<DriverScreen> {
 
-  StreamSubscription<Position>? stream;
+  LatLng location = LatLng(31.3260,75.5762);
 
-  bool tracking = false;
-
-  /// START LIVE TRACKING
-  void startTracking() async {
-
-    LocationPermission permission =
-    await Geolocator.requestPermission();
-
-    if(permission == LocationPermission.denied){
-      return;
-    }
-
-    setState(() {
-      tracking = true;
-    });
-
-    stream = Geolocator.getPositionStream(
-
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 5,
-      ),
-
-    ).listen((Position position) {
-
-      FirebaseFirestore.instance
-          .collection("buses")
-          .doc("bus101")
-          .set({
-
-        "lat": position.latitude,
-        "lng": position.longitude,
-        "time": DateTime.now()
-
-      });
-
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Live Tracking Started"))
-    );
-  }
-
-
-
-  /// STOP TRACKING
-  void stopTracking(){
-
-    stream?.cancel();
-
-    setState(() {
-      tracking = false;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Tracking Stopped"))
-    );
-  }
-
-
+  bool tracking=false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,54 +21,147 @@ class _DriverScreenState extends State<DriverScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("Driver Live Tracking"),
+
+        title: const Text("Driver Panel"),
+
+        actions: [
+
+          IconButton(
+              onPressed: (){
+                Navigator.pushNamed(context,'/help');
+              },
+              icon: const Icon(Icons.help)
+          ),
+
+          IconButton(
+              onPressed: (){
+                Navigator.pushNamed(context,'/chatbot');
+              },
+              icon: const Icon(Icons.smart_toy)
+          ),
+
+        ],
+      ),
+
+      floatingActionButton: FloatingActionButton(
+
+        backgroundColor: Colors.red,
+
+        onPressed: (){
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("SOS Sent"))
+          );
+        },
+
+        child: const Icon(Icons.warning),
+
       ),
 
       body: Column(
 
         children: [
 
-          const SizedBox(height: 40),
+          Expanded(
 
-          Icon(
-            tracking
-                ? Icons.gps_fixed
-                : Icons.gps_off,
-            size: 80,
-            color: Colors.indigo,
+            child: FlutterMap(
+
+              options: MapOptions(
+                initialCenter: location,
+                initialZoom: 15,
+              ),
+
+              children: [
+
+                TileLayer(
+                  urlTemplate:
+                  "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                ),
+
+                MarkerLayer(
+
+                  markers: [
+
+                    Marker(
+                      point: location,
+                      width: 80,
+                      height: 80,
+
+                      child: const Icon(
+                        Icons.directions_bus,
+                        size: 40,
+                        color: Colors.red,
+                      ),
+
+                    )
+
+                  ],
+
+                )
+
+              ],
+
+            ),
+
           ),
 
-          const SizedBox(height: 20),
+          Container(
 
-          Text(
-            tracking
-                ? "Tracking ON"
-                : "Tracking OFF",
-            style: const TextStyle(fontSize: 22),
-          ),
+            padding: const EdgeInsets.all(20),
 
-          const SizedBox(height: 40),
+            child: Column(
 
-          ElevatedButton(
+              children: [
 
-            onPressed: startTracking,
+                const Text("Bus Number: PB08-101"),
 
-            child: const Text("Start Tracking"),
+                const SizedBox(height:10),
 
-          ),
+                Text(
+                  tracking
+                      ? "Status: Running"
+                      : "Status: Stopped",
+                ),
 
-          const SizedBox(height: 20),
+                const SizedBox(height:10),
 
-          ElevatedButton(
+                ElevatedButton(
 
-            onPressed: stopTracking,
+                  onPressed: (){
+                    setState(() {
+                      tracking=true;
+                    });
+                  },
 
-            child: const Text("Stop Tracking"),
+                  child: const Text("Start Trip"),
+
+                ),
+
+                const SizedBox(height:10),
+
+                ElevatedButton(
+
+                  onPressed: (){
+                    setState(() {
+                      tracking=false;
+                    });
+                  },
+
+                  child: const Text("Stop Trip"),
+
+                ),
+
+              ],
+
+            ),
 
           )
 
         ],
+
       ),
+
     );
+
   }
+
 }

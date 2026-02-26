@@ -1,16 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Internet Permission (MAP layi MOST IMPORTANT) -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <!-- Location Permission -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <application
         android:label="smart_transport_system"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
-        <!-- 🔥 GOOGLE MAPS API KEY -->
+        <!-- Google Maps API (Optional) -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD3cYuSPFkSujWPFuVzJTwfmyTmyZoAy6w"/>
@@ -38,7 +40,7 @@
 
         <meta-data
             android:name="flutterEmbedding"
-            android:value="2" />
+            android:value="2"/>
 
     </application>
 

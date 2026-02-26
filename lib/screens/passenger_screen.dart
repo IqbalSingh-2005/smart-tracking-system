@@ -3,62 +3,41 @@ import 'package:flutter/material.dart';
 class PassengerScreen extends StatelessWidget {
   const PassengerScreen({super.key});
 
-  Widget buildOption(
+  Widget option(
       BuildContext context,
       String title,
       IconData icon,
-      String route,
-      ) {
+      String route){
+
     return GestureDetector(
 
-      onTap: () {
+      onTap: (){
         Navigator.pushNamed(context, route);
       },
 
-      child: Container(
-
-        padding: const EdgeInsets.all(12),
-
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 6,
-              offset: const Offset(0,3),
-            )
-          ],
-        ),
+      child: Card(
 
         child: Column(
 
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment:
+          MainAxisAlignment.center,
 
           children: [
 
-            Icon(
-              icon,
-              size: 28,
-              color: Colors.indigo,
-            ),
+            Icon(icon,size:30),
 
-            const SizedBox(height: 8),
+            const SizedBox(height:5),
 
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
-            )
+            Text(title)
 
           ],
+
         ),
+
       ),
+
     );
+
   }
 
   @override
@@ -67,110 +46,74 @@ class PassengerScreen extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("Passenger Dashboard"),
-        elevation: 0,
+
+        title: const Text("Passenger Panel"),
+
+        actions: [
+
+          IconButton(
+              onPressed: (){
+                Navigator.pushNamed(context,'/chatbot');
+              },
+              icon: const Icon(Icons.smart_toy)
+          )
+
+        ],
       ),
 
-      body: Padding(
+      floatingActionButton: FloatingActionButton(
 
-        padding: const EdgeInsets.all(16),
+        backgroundColor: Colors.red,
 
-        child: Column(
+        onPressed: (){
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("SOS Sent"))
+          );
+        },
 
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: const Icon(Icons.warning),
 
-          children: [
+      ),
 
-            /// Header
+      body: GridView.count(
 
-            const Text(
-              "Smart Transport",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        crossAxisCount: 3,
 
-            const SizedBox(height: 5),
+        children: [
 
-            const Text(
-              "Passenger Panel",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ),
+          option(context,"Track Bus",
+              Icons.location_on,'/trackbus'),
 
-            const SizedBox(height: 20),
+          option(context,"Routes",
+              Icons.alt_route,'/routes'),
 
-            /// Grid Options
+          option(context,"Schedule",
+              Icons.schedule,'/schedule'),
 
-            Expanded(
+          option(context,"Tickets",
+              Icons.confirmation_number,'/tickets'),
 
-              child: GridView.count(
+          option(context,"My Tickets",
+              Icons.receipt,'/mytickets'),
 
-                crossAxisCount: 3,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
+          option(context,"History",
+              Icons.history,'/history'),
 
-                children: [
+          option(context,"Alerts",
+              Icons.notifications,'/alerts'),
 
-                  buildOption(
-                      context,
-                      "Track Bus",
-                      Icons.location_on,
-                      '/trackbus'),
+          option(context,"Profile",
+              Icons.person,'/profile'),
 
-                  buildOption(
-                      context,
-                      "Routes",
-                      Icons.alt_route,
-                      '/routes'),
+          option(context,"Help Bot",
+              Icons.smart_toy,'/chatbot'),
 
-                  buildOption(
-                      context,
-                      "Tickets",
-                      Icons.confirmation_number,
-                      '/tickets'),
+        ],
 
-                  buildOption(
-                      context,
-                      "My Tickets",
-                      Icons.receipt_long,
-                      '/mytickets'),
-
-                  buildOption(
-                      context,
-                      "Schedule",
-                      Icons.schedule,
-                      '/schedule'),
-
-                  buildOption(
-                      context,
-                      "History",
-                      Icons.history,
-                      '/history'),
-
-                  buildOption(
-                      context,
-                      "Alerts",
-                      Icons.notifications,
-                      '/alerts'),
-
-                  buildOption(
-                      context,
-                      "Profile",
-                      Icons.person,
-                      '/profile'),
-
-                ],
-              ),
-            ),
-
-          ],
-        ),
       ),
 
     );
+
   }
+
 }

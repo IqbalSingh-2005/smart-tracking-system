@@ -2,21 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-/// Main Screens
+/// Splash
+import 'screens/splash_screen.dart';
+
+/// Roles
 import 'screens/role_selection_screen.dart';
+
+/// Main Screens
 import 'screens/passenger_screen.dart';
 import 'screens/driver_screen.dart';
 import 'screens/conductor_screen.dart';
 
-/// Passenger Screens
-import 'screens/passenger/routes_screen.dart';
-import 'screens/passenger/ticket_screen.dart';
-import 'screens/passenger/schedule_screen.dart';
-import 'screens/passenger/profile_screen.dart';
-import 'screens/passenger/history_screen.dart';
-import 'screens/passenger/alerts_screen.dart';
-import 'screens/passenger/mytickets_screen.dart';
+/// Passenger Features
 import 'screens/passenger/track_bus_screen.dart';
+import 'screens/passenger/routes_screen.dart';
+import 'screens/passenger/schedule_screen.dart';
+import 'screens/passenger/ticket_screen.dart';
+import 'screens/passenger/mytickets_screen.dart';
+import 'screens/passenger/history_screen.dart';
+import 'screens/passenger/profile_screen.dart';
+import 'screens/passenger/alerts_screen.dart';
+
+/// Chatbot
+import 'screens/chatbot_screen.dart';
+
+/// Help AI
+import 'screens/help_screen.dart';
 
 
 void main() async {
@@ -32,6 +43,7 @@ void main() async {
 
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   @override
@@ -44,32 +56,38 @@ class MyApp extends StatelessWidget {
       title: "Smart Transport System",
 
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.grey[100],
+        primarySwatch: Colors.indigo,
       ),
 
-      /// First Screen
-      home: const RoleSelectionScreen(),
+      home: const SplashScreen(),
 
       routes: {
 
         /// Roles
+        '/roles': (context) => const RoleSelectionScreen(),
+
         '/passenger': (context) => const PassengerScreen(),
         '/driver': (context) => const DriverScreen(),
         '/conductor': (context) => const ConductorScreen(),
 
-        /// Passenger Features
-        '/routes': (context) => const RoutesScreen(),
-        '/tickets': (context) => const TicketScreen(),
-        '/schedule': (context) => const ScheduleScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/history': (context) => const HistoryScreen(),
-        '/alerts': (context) => const AlertsScreen(),
-        '/mytickets': (context) => const MyTicketsScreen(),
+        /// Passenger
         '/trackbus': (context) => const TrackBusScreen(),
+        '/routes': (context) => const RoutesScreen(),
+        '/schedule': (context) => const ScheduleScreen(),
+        '/tickets': (context) => const TicketScreen(),
+        '/mytickets': (context) => const MyTicketsScreen(),
+        '/history': (context) => const HistoryScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/alerts': (context) => const AlertsScreen(),
+
+        /// Help + Chatbot
+        '/chatbot': (context) => const ChatbotScreen(),
+        '/help': (context) => const HelpScreen(),
 
       },
 
     );
+
   }
+
 }

@@ -12,7 +12,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   GoogleMapController? mapController;
 
-  final LatLng startPoint = const LatLng(31.3260, 75.5762);
+  static const LatLng startPoint =
+      LatLng(31.3260, 75.5762);
 
   @override
   Widget build(BuildContext context) {
@@ -21,30 +22,35 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
       appBar: AppBar(
         title: const Text("Driver Navigation"),
+        centerTitle: true,
       ),
 
       body: GoogleMap(
 
-        initialCameraPosition: CameraPosition(
+        initialCameraPosition:
+        const CameraPosition(
           target: startPoint,
-          zoom: 14,
+          zoom: 15,
         ),
 
-        onMapCreated: (controller){
+        onMapCreated: (controller) {
           mapController = controller;
         },
 
-        markers: {
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+        zoomControlsEnabled: true,
 
+        markers: {
           Marker(
             markerId: const MarkerId("bus"),
             position: startPoint,
           )
-
         },
 
       ),
 
     );
+
   }
 }

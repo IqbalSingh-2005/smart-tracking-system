@@ -7,15 +7,17 @@ class DriverLoginScreen extends StatefulWidget {
   const DriverLoginScreen({super.key});
 
   @override
-  State<DriverLoginScreen> createState() => _DriverLoginScreenState();
+  State<DriverLoginScreen> createState() =>
+      _DriverLoginScreenState();
 }
 
-class _DriverLoginScreenState extends State<DriverLoginScreen> {
+class _DriverLoginScreenState
+    extends State<DriverLoginScreen> {
 
   final email = TextEditingController();
   final password = TextEditingController();
 
-  bool loading=false;
+  bool loading = false;
 
   Future loginDriver() async {
 
@@ -23,20 +25,24 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
 
     try{
 
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
           email: email.text,
           password: password.text);
 
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (_) => const DriverScreen()));
+              builder: (_) =>
+              const DriverScreen()));
 
     }catch(e){
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
           const SnackBar(
-              content: Text("Driver Login Failed")));
+              content: Text(
+                  "Driver Login Failed")));
 
     }
 
@@ -49,25 +55,34 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
 
     return Scaffold(
 
-      appBar: AppBar(title: const Text("Driver Login")),
+      appBar:
+      AppBar(title:
+      const Text("Driver Login")),
 
       body: Padding(
-        padding: const EdgeInsets.all(25),
+
+        padding:
+        const EdgeInsets.all(25),
 
         child: Column(
 
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment:
+          MainAxisAlignment.center,
 
           children: [
 
-            const Icon(Icons.drive_eta,size:80,color:Colors.blue),
+            const Icon(
+                Icons.drive_eta,
+                size:80),
 
             const SizedBox(height:20),
 
             TextField(
               controller: email,
-              decoration: const InputDecoration(
-                  labelText:"Driver Email"),
+              decoration:
+              const InputDecoration(
+                  labelText:
+                  "Driver Email"),
             ),
 
             const SizedBox(height:15),
@@ -75,15 +90,19 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
             TextField(
               controller: password,
               obscureText: true,
-              decoration: const InputDecoration(
-                  labelText:"Password"),
+              decoration:
+              const InputDecoration(
+                  labelText:
+                  "Password"),
             ),
 
             const SizedBox(height:25),
 
             ElevatedButton(
 
-              onPressed: loading?null:loginDriver,
+              onPressed:
+              loading?null:
+              loginDriver,
 
               child: loading
                   ? const CircularProgressIndicator()

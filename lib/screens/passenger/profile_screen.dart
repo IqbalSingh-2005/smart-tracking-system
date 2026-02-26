@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
               "Passenger Name",
               style: TextStyle(
                 fontSize: 22,
-                fontWeight: FontWeight.bold,
+                
               ),
             ),
 

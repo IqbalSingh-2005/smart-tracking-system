@@ -2,63 +2,61 @@ import 'package:flutter/material.dart';
 
 import 'auth/driver_login.dart';
 import 'auth/conductor_login.dart';
-import 'passenger_screen.dart';
+import 'auth/passenger_login.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
 
-  Widget roleCard(
+  Widget roleButton(
       BuildContext context,
       String title,
       IconData icon,
-      Color color,
       Widget screen,
+      Color color,
       ) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => screen),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 15),
-        padding: const EdgeInsets.all(20),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
 
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 10,
-              color: Colors.black12,
-            )
-          ],
-        ),
+      child: SizedBox(
+        width: double.infinity,
 
-        child: Row(
-          children: [
+        child: ElevatedButton(
 
-            CircleAvatar(
-              radius: 30,
-              backgroundColor: color,
-              child: Icon(icon,color: Colors.white,size: 30),
-            ),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(18),
+            backgroundColor: color,
+          ),
 
-            const SizedBox(width: 20),
+          onPressed: () {
 
-            Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => screen,
+              ),
+            );
 
-            const Spacer(),
+          },
 
-            const Icon(Icons.arrow_forward_ios)
+          child: Row(
 
-          ],
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+
+              Icon(
+                icon,
+                size: 28,
+              ),
+
+              const SizedBox(width: 10),
+
+              Text(
+                title,
+              ),
+
+            ],
+          ),
         ),
       ),
     );
@@ -70,58 +68,50 @@ class RoleSelectionScreen extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("Smart Transport"),
+        title: const Text("Select Role"),
         centerTitle: true,
       ),
 
       body: Padding(
+
         padding: const EdgeInsets.all(20),
 
         child: Column(
 
-          children: [
+          mainAxisAlignment: MainAxisAlignment.center,
 
-            const SizedBox(height: 20),
+          children: [
 
             const Icon(
               Icons.directions_bus,
-              size: 80,
+              size: 100,
               color: Colors.indigo,
-            ),
-
-            const SizedBox(height: 10),
-
-            const Text(
-              "Select Role",
-              style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 40),
 
-            roleCard(
+            roleButton(
               context,
               "Passenger",
               Icons.person,
+              const PassengerLoginScreen(),
               Colors.green,
-              const PassengerScreen(),
             ),
 
-            roleCard(
+            roleButton(
               context,
               "Driver",
               Icons.drive_eta,
-              Colors.blue,
               const DriverLoginScreen(),
+              Colors.blue,
             ),
 
-            roleCard(
+            roleButton(
               context,
               "Conductor",
               Icons.confirmation_number,
-              Colors.orange,
               const ConductorLoginScreen(),
+              Colors.orange,
             ),
 
           ],

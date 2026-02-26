@@ -5,19 +5,14 @@ class BusStatusScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       appBar: AppBar(
-        title: const Text("Bus Status"),
+        title: Text("Bus Status"),
       ),
 
-      body: const Center(
-
+      body: Center(
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
-
           children: [
 
             Icon(
@@ -30,16 +25,11 @@ class BusStatusScreen extends StatelessWidget {
 
             Text(
               "Bus Running Normally",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
             ),
 
           ],
         ),
       ),
-
     );
   }
 }

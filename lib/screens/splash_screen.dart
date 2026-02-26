@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'role_selection_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,54 +14,71 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    startTimer();
+  }
 
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const RoleSelectionScreen(),
-        ),
-      );
+  void startTimer() {
+
+    Future.delayed(const Duration(seconds: 3), () {
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RoleSelectionScreen(),
+          ),
+        );
+      }
+
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
+
       backgroundColor: Colors.indigo,
 
       body: Center(
+
         child: Column(
+
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: [
 
-            Icon(
+            const Icon(
               Icons.directions_bus,
               size: 120,
               color: Colors.white,
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-            Text(
+            const Text(
               "Smart Transport System",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 26,
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
               ),
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 30),
 
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               color: Colors.white,
-            )
+            ),
 
           ],
+
         ),
+
       ),
+
     );
+
   }
+
 }

@@ -113,7 +113,7 @@ class TicketScreen extends StatelessWidget {
                       "Sample Ticket",
                       style: TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        
                       ),
                     ),
 
