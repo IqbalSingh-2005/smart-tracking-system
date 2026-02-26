@@ -1,8 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'driver/navigation_screen.dart';
-import 'driver/trips_screen.dart';
-import 'driver/bus_status_screen.dart';
-import 'driver/settings_screen.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DriverScreen extends StatefulWidget {
   const DriverScreen({super.key});
@@ -13,155 +12,64 @@ class DriverScreen extends StatefulWidget {
 
 class _DriverScreenState extends State<DriverScreen> {
 
-  bool dutyStarted = false;
+  StreamSubscription<Position>? stream;
 
-  /// START DUTY
-  void startDuty() {
+  bool tracking = false;
+
+  /// START LIVE TRACKING
+  void startTracking() async {
+
+    LocationPermission permission =
+    await Geolocator.requestPermission();
+
+    if(permission == LocationPermission.denied){
+      return;
+    }
 
     setState(() {
-      dutyStarted = true;
+      tracking = true;
+    });
+
+    stream = Geolocator.getPositionStream(
+
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 5,
+      ),
+
+    ).listen((Position position) {
+
+      FirebaseFirestore.instance
+          .collection("buses")
+          .doc("bus101")
+          .set({
+
+        "lat": position.latitude,
+        "lng": position.longitude,
+        "time": DateTime.now()
+
+      });
+
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Duty Started"),
-      ),
+        const SnackBar(content: Text("Live Tracking Started"))
     );
   }
 
-  /// STOP DUTY
-  void stopDuty() {
+
+
+  /// STOP TRACKING
+  void stopTracking(){
+
+    stream?.cancel();
 
     setState(() {
-      dutyStarted = false;
+      tracking = false;
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Duty Stopped"),
-      ),
-    );
-  }
-
-  /// HELP SCREEN
-  void showHelp() {
-
-    showDialog(
-
-      context: context,
-
-      builder: (context) {
-
-        return AlertDialog(
-
-          title: const Text("Emergency Help"),
-
-          content: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-
-              ListTile(
-                leading: Icon(Icons.phone),
-                title: Text("Customer Care"),
-                subtitle: Text("1800-123-456"),
-              ),
-
-              ListTile(
-                leading: Icon(Icons.local_police),
-                title: Text("Police"),
-                subtitle: Text("100"),
-              ),
-
-              ListTile(
-                leading: Icon(Icons.local_hospital),
-                title: Text("Ambulance"),
-                subtitle: Text("102"),
-              ),
-
-              ListTile(
-                leading: Icon(Icons.fire_truck),
-                title: Text("Fire Brigade"),
-                subtitle: Text("101"),
-              ),
-
-            ],
-          ),
-
-          actions: [
-
-            TextButton(
-
-              onPressed: (){
-                Navigator.pop(context);
-              },
-
-              child: const Text("Close"),
-            )
-
-          ],
-        );
-      },
-    );
-  }
-
-
-  /// GRID BUTTON
-  Widget buildBox(
-      String title,
-      IconData icon,
-      VoidCallback onTap
-      ){
-
-    return GestureDetector(
-
-      onTap: onTap,
-
-      child: Container(
-
-        decoration: BoxDecoration(
-
-          color: Colors.white,
-
-          borderRadius: BorderRadius.circular(18),
-
-          boxShadow: [
-
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 6,
-              offset: const Offset(2,2),
-            )
-
-          ],
-
-        ),
-
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
-
-          children: [
-
-            Icon(
-              icon,
-              size: 35,
-              color: Colors.indigo,
-            ),
-
-            const SizedBox(height: 8),
-
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold
-              ),
-            )
-
-          ],
-        ),
-      ),
+        const SnackBar(content: Text("Tracking Stopped"))
     );
   }
 
@@ -173,167 +81,51 @@ class _DriverScreenState extends State<DriverScreen> {
     return Scaffold(
 
       appBar: AppBar(
-
-        title: const Text("Driver Dashboard"),
-
-        backgroundColor: Colors.indigo,
-
+        title: const Text("Driver Live Tracking"),
       ),
 
       body: Column(
 
         children: [
 
-          /// STATUS CARD
+          const SizedBox(height: 40),
 
-          Container(
+          Icon(
+            tracking
+                ? Icons.gps_fixed
+                : Icons.gps_off,
+            size: 80,
+            color: Colors.indigo,
+          ),
 
-            margin: const EdgeInsets.all(15),
+          const SizedBox(height: 20),
 
-            padding: const EdgeInsets.all(15),
+          Text(
+            tracking
+                ? "Tracking ON"
+                : "Tracking OFF",
+            style: const TextStyle(fontSize: 22),
+          ),
 
-            decoration: BoxDecoration(
+          const SizedBox(height: 40),
 
-              color: Colors.indigo,
+          ElevatedButton(
 
-              borderRadius: BorderRadius.circular(15),
+            onPressed: startTracking,
 
-            ),
-
-            child: Row(
-
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-              children: [
-
-                const Column(
-
-                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                  children: [
-
-                    Text(
-                      "Bus No: PB10-1234",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-                    Text(
-                      "Driver Mode",
-                      style: TextStyle(
-                          color: Colors.white70
-                      ),
-                    ),
-
-                  ],
-                ),
-
-                Icon(
-                  dutyStarted
-                      ? Icons.check_circle
-                      : Icons.cancel,
-                  color: Colors.white,
-                  size: 35,
-                )
-
-              ],
-            ),
+            child: const Text("Start Tracking"),
 
           ),
 
-          /// BUTTON GRID
+          const SizedBox(height: 20),
 
-          Expanded(
+          ElevatedButton(
 
-            child: GridView.count(
+            onPressed: stopTracking,
 
-              padding: const EdgeInsets.all(15),
+            child: const Text("Stop Tracking"),
 
-              crossAxisCount: 2,
-
-              mainAxisSpacing: 15,
-
-              crossAxisSpacing: 15,
-
-              children: [
-
-                buildBox(
-                    "Start Duty",
-                    Icons.play_arrow,
-                    startDuty
-                ),
-
-                buildBox(
-                    "Stop Duty",
-                    Icons.stop,
-                    stopDuty
-                ),
-
-                buildBox(
-                    "Navigation",
-                    Icons.navigation,
-                        (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder:(context)=>const NavigationScreen()
-                          )
-                      );
-                    }
-                ),
-
-                buildBox(
-                    "Bus Status",
-                    Icons.directions_bus,
-                        (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder:(context)=>const BusStatusScreen()
-                          )
-                      );
-                    }
-                ),
-
-                buildBox(
-                    "Trips",
-                    Icons.route,
-                        (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder:(context)=>const TripsScreen()
-                          )
-                      );
-                    }
-                ),
-
-                buildBox(
-                    "Settings",
-                    Icons.settings,
-                        (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder:(context)=>const SettingsScreen()
-                          )
-                      );
-                    }
-                ),
-
-                buildBox(
-                    "Help",
-                    Icons.support_agent,
-                    showHelp
-                ),
-
-              ],
-            ),
-          ),
+          )
 
         ],
       ),
