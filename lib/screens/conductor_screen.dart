@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'driver/settings_screen.dart';
 
 class ConductorScreen extends StatefulWidget {
   const ConductorScreen({super.key});
@@ -20,8 +21,22 @@ class _ConductorScreenState extends State<ConductorScreen> {
         title: const Text('Conductor Panel'),
         actions: [
           IconButton(
+            onPressed: () => Navigator.pushNamed(context, '/stats'),
+            icon: const Icon(Icons.bar_chart_rounded),
+            tooltip: 'Live Stats',
+          ),
+          IconButton(
             onPressed: () => Navigator.pushNamed(context, '/help'),
             icon: const Icon(Icons.help_outline_rounded),
+            tooltip: 'Help',
+          ),
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            ),
+            icon: const Icon(Icons.settings_rounded),
+            tooltip: 'Settings',
           ),
         ],
       ),
