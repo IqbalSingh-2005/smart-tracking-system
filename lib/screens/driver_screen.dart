@@ -10,158 +10,177 @@ class DriverScreen extends StatefulWidget {
 }
 
 class _DriverScreenState extends State<DriverScreen> {
-
-  LatLng location = LatLng(31.3260,75.5762);
-
-  bool tracking=false;
+  LatLng _location = const LatLng(31.3260, 75.5762);
+  bool _tracking = false;
+  int _passengers = 0;
 
   @override
   Widget build(BuildContext context) {
-
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-
       appBar: AppBar(
-
-        title: const Text("Driver Panel"),
-
+        title: const Text('Driver Panel'),
         actions: [
-
           IconButton(
-              onPressed: (){
-                Navigator.pushNamed(context,'/help');
-              },
-              icon: const Icon(Icons.help)
+            onPressed: () => Navigator.pushNamed(context, '/help'),
+            icon: const Icon(Icons.help_outline_rounded),
+            tooltip: 'Help',
           ),
-
           IconButton(
-              onPressed: (){
-                Navigator.pushNamed(context,'/chatbot');
-              },
-              icon: const Icon(Icons.smart_toy)
+            onPressed: () => Navigator.pushNamed(context, '/chatbot'),
+            icon: const Icon(Icons.smart_toy_rounded),
+            tooltip: 'Chatbot',
           ),
-
         ],
       ),
-
-      floatingActionButton: FloatingActionButton(
-
+      floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.red,
-
-        onPressed: (){
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("SOS Sent"))
-          );
-        },
-
-        child: const Icon(Icons.warning),
-
+        foregroundColor: Colors.white,
+        onPressed: () => ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('🚨 SOS Sent!'))),
+        icon: const Icon(Icons.warning_amber_rounded),
+        label: const Text('SOS'),
       ),
-
       body: Column(
-
         children: [
-
           Expanded(
-
+            flex: 3,
             child: FlutterMap(
-
               options: MapOptions(
-                initialCenter: location,
+                initialCenter: _location,
                 initialZoom: 15,
               ),
-
               children: [
-
                 TileLayer(
                   urlTemplate:
-                  "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'bus_tracking_system',
                 ),
-
                 MarkerLayer(
-
                   markers: [
-
                     Marker(
-                      point: location,
-                      width: 80,
-                      height: 80,
-
-                      child: const Icon(
-                        Icons.directions_bus,
+                      point: _location,
+                      width: 60,
+                      height: 60,
+                      child: Icon(
+                        Icons.directions_bus_rounded,
                         size: 40,
-                        color: Colors.red,
+                        color: _tracking ? Colors.green : Colors.red,
                       ),
-
-                    )
-
+                    ),
                   ],
-
-                )
-
+                ),
               ],
-
             ),
-
           ),
-
           Container(
-
-            padding: const EdgeInsets.all(20),
-
-            child: Column(
-
-              children: [
-
-                const Text("Bus Number: PB08-101"),
-
-                const SizedBox(height:10),
-
-                Text(
-                  tracking
-                      ? "Status: Running"
-                      : "Status: Stopped",
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: scheme.surface,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 8,
+                  offset: const Offset(0, -2),
                 ),
-
-                const SizedBox(height:10),
-
-                ElevatedButton(
-
-                  onPressed: (){
-                    setState(() {
-                      tracking=true;
-                    });
-                  },
-
-                  child: const Text("Start Trip"),
-
-                ),
-
-                const SizedBox(height:10),
-
-                ElevatedButton(
-
-                  onPressed: (){
-                    setState(() {
-                      tracking=false;
-                    });
-                  },
-
-                  child: const Text("Stop Trip"),
-
-                ),
-
               ],
-
             ),
-
-          )
-
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: _infoCard(
+                        'Bus No',
+                        'PB08-101',
+                        Icons.directions_bus_rounded,
+                        Colors.indigo,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: _infoCard(
+                        'Status',
+                        _tracking ? 'Running' : 'Stopped',
+                        _tracking
+                            ? Icons.play_circle_rounded
+                            : Icons.stop_circle_rounded,
+                        _tracking ? Colors.green : Colors.red,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: _infoCard(
+                        'Passengers',
+                        '$_passengers',
+                        Icons.people_rounded,
+                        Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onPressed: _tracking
+                            ? null
+                            : () => setState(() => _tracking = true),
+                        icon: const Icon(Icons.play_arrow_rounded),
+                        label: const Text('Start Trip'),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onPressed: !_tracking
+                            ? null
+                            : () => setState(() => _tracking = false),
+                        icon: const Icon(Icons.stop_rounded),
+                        label: const Text('End Trip'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
-
       ),
-
     );
-
   }
 
+  Widget _infoCard(
+      String label, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 22),
+          const SizedBox(height: 4),
+          Text(value,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 14, color: color)),
+          Text(label,
+              style:
+                  const TextStyle(fontSize: 10, color: Colors.grey)),
+        ],
+      ),
+    );
+  }
 }
