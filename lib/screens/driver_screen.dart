@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'driver/nearby_drivers_screen.dart';
+import 'driver/settings_screen.dart';
+import 'driver/trips_screen.dart';
+import 'driver/bus_status_screen.dart';
 
 class DriverScreen extends StatefulWidget {
   const DriverScreen({super.key});
@@ -32,14 +35,33 @@ class _DriverScreenState extends State<DriverScreen> {
             tooltip: 'Nearby Drivers',
           ),
           IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const TripsScreen()),
+            ),
+            icon: const Icon(Icons.route_rounded),
+            tooltip: 'Trip History',
+          ),
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const BusStatusScreen()),
+            ),
+            icon: const Icon(Icons.monitor_heart_rounded),
+            tooltip: 'Bus Status',
+          ),
+          IconButton(
             onPressed: () => Navigator.pushNamed(context, '/help'),
             icon: const Icon(Icons.help_outline_rounded),
             tooltip: 'Help',
           ),
           IconButton(
-            onPressed: () => Navigator.pushNamed(context, '/chatbot'),
-            icon: const Icon(Icons.smart_toy_rounded),
-            tooltip: 'Chatbot',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            ),
+            icon: const Icon(Icons.settings_rounded),
+            tooltip: 'Settings',
           ),
         ],
       ),
