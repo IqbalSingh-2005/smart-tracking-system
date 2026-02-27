@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'driver/navigation_screen.dart';
 import 'driver/nearby_drivers_screen.dart';
 import 'driver/settings_screen.dart';
 import 'driver/trips_screen.dart';
@@ -25,6 +26,14 @@ class _DriverScreenState extends State<DriverScreen> {
       appBar: AppBar(
         title: const Text('Driver Panel'),
         actions: [
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const NavigationScreen()),
+            ),
+            icon: const Icon(Icons.navigation_rounded),
+            tooltip: 'Navigation',
+          ),
           IconButton(
             onPressed: () => Navigator.push(
               context,
