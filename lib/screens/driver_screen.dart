@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'driver/nearby_drivers_screen.dart';
 
 class DriverScreen extends StatefulWidget {
   const DriverScreen({super.key});
@@ -21,6 +22,15 @@ class _DriverScreenState extends State<DriverScreen> {
       appBar: AppBar(
         title: const Text('Driver Panel'),
         actions: [
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => const NearbyDriversScreen()),
+            ),
+            icon: const Icon(Icons.people_alt_rounded),
+            tooltip: 'Nearby Drivers',
+          ),
           IconButton(
             onPressed: () => Navigator.pushNamed(context, '/help'),
             icon: const Icon(Icons.help_outline_rounded),
