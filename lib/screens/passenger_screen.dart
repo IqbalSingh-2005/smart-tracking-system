@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'driver/settings_screen.dart';
 
 class PassengerScreen extends StatelessWidget {
   const PassengerScreen({super.key});
@@ -13,6 +14,7 @@ class PassengerScreen extends StatelessWidget {
     _MenuItem('Alerts', Icons.notifications_rounded, '/alerts', Color(0xFFE53935)),
     _MenuItem('Profile', Icons.person_rounded, '/profile', Color(0xFF3949AB)),
     _MenuItem('Help Bot', Icons.smart_toy_rounded, '/chatbot', Color(0xFF00897B)),
+    _MenuItem('Live Stats', Icons.bar_chart_rounded, '/stats', Color(0xFF00B4D8)),
   ];
 
   @override
@@ -21,6 +23,14 @@ class PassengerScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Passenger Panel'),
         actions: [
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            ),
+            icon: const Icon(Icons.settings_rounded),
+            tooltip: 'Settings',
+          ),
           IconButton(
             onPressed: () => Navigator.pushNamed(context, '/chatbot'),
             icon: const Icon(Icons.smart_toy_rounded),
