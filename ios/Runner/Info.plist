@@ -45,5 +45,23 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Location Permissions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to your location to show real-time bus tracking on the map.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to your location in the background to continuously track and share your bus position.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to your location in the background to continuously track and share your bus position.</string>
+	<!-- Camera Permission -->
+	<key>NSCameraUsageDescription</key>
+	<string>This app uses the camera for face verification during login.</string>
+	<!-- Photo Library Permissions -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to your photo library to select a profile picture.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs permission to save photos to your library.</string>
+	<!-- Microphone Permission (required by camera plugin for video recording during face verification) -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires microphone access for video recording during face verification.</string>
 </dict>
 </plist>
