@@ -15,6 +15,7 @@ class PassengerScreen extends StatelessWidget {
     _MenuItem('Profile', Icons.person_rounded, '/profile', Color(0xFF3949AB)),
     _MenuItem('Help Bot', Icons.smart_toy_rounded, '/chatbot', Color(0xFF00897B)),
     _MenuItem('Live Stats', Icons.bar_chart_rounded, '/stats', Color(0xFF00B4D8)),
+    _MenuItem('Journey Planner', Icons.map_rounded, '/journey', Color(0xFFFF6F00)),
   ];
 
   @override

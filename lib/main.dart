@@ -22,6 +22,7 @@ import 'screens/passenger/mytickets_screen.dart';
 import 'screens/passenger/history_screen.dart';
 import 'screens/passenger/profile_screen.dart';
 import 'screens/passenger/alerts_screen.dart';
+import 'screens/passenger/journey_planner_screen.dart';
 
 /// Chatbot
 import 'screens/chatbot_screen.dart';
@@ -163,6 +164,7 @@ class MyApp extends StatelessWidget {
           '/history': (context) => const HistoryScreen(),
           '/profile': (context) => const ProfileScreen(),
           '/alerts': (context) => const AlertsScreen(),
+          '/journey': (context) => const JourneyPlannerScreen(),
 
           /// Help + Chatbot
           '/chatbot': (context) => const ChatbotScreen(),
